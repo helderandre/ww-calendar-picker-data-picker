@@ -13,14 +13,13 @@ export default {
       section: 'settings',
       bindable: true,
       defaultValue: '',
-      hidden: content => content?.rangeMode,
       /* wwEditor:start */
       bindingValidation: {
         type: 'string',
         tooltip: 'ISO date string (e.g., "2024-03-15T14:30:00")',
       },
       propertyHelp: {
-        en: 'Initial date and time value in ISO format. Leave empty for current date/time. Hidden in range mode.',
+        en: 'Initial date and time value in ISO format. Leave empty for current date/time.',
       },
       /* wwEditor:end */
     },
@@ -32,7 +31,6 @@ export default {
       section: 'settings',
       bindable: true,
       defaultValue: '',
-      hidden: content => !content?.rangeMode,
       /* wwEditor:start */
       bindingValidation: {
         type: 'string',
@@ -51,7 +49,6 @@ export default {
       section: 'settings',
       bindable: true,
       defaultValue: '',
-      hidden: content => !content?.rangeMode,
       /* wwEditor:start */
       bindingValidation: {
         type: 'string',

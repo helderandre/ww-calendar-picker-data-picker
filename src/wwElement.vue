@@ -307,6 +307,8 @@ export default {
     const originalEndValue = ref('')
 
     // ========== COMPUTED PROPERTIES ==========
+    const content = computed(() => props.content)
+    
     const getLocale = computed(() => {
       const localeCode = props.content?.locale || 'en-US'
       
@@ -1397,11 +1399,11 @@ export default {
     }
 
     // ========== WATCHERS ==========
-    // Watch for initialValue changes
+    // Watch for initialValue changes (single mode)
     watch(
       () => props.content?.initialValue,
       (newValue) => {
-        if (newValue && newValue !== selectedValue.value) {
+        if (!props.content?.rangeMode && newValue && newValue !== selectedValue.value) {
           try {
             const date = new Date(newValue)
             if (!isNaN(date.getTime())) {
@@ -1413,10 +1415,55 @@ export default {
           } catch (error) {
             // Invalid date, ignore
           }
-        } else if (!newValue) {
+        } else if (!props.content?.rangeMode && !newValue) {
           setSelectedValue('')
           setFormattedValue('')
           setTimestamp(0)
+        }
+      },
+      { immediate: true }
+    )
+
+    // Watch for initialStartValue changes (range mode)
+    watch(
+      () => props.content?.initialStartValue,
+      (newValue) => {
+        if (props.content?.rangeMode && newValue && newValue !== startValue.value) {
+          try {
+            const date = new Date(newValue)
+            if (!isNaN(date.getTime())) {
+              setStartValue(newValue)
+              setStartTimestamp(date.getTime())
+              currentMonth.value = date
+            }
+          } catch (error) {
+            // Invalid date, ignore
+          }
+        } else if (props.content?.rangeMode && !newValue) {
+          setStartValue('')
+          setStartTimestamp(0)
+        }
+      },
+      { immediate: true }
+    )
+
+    // Watch for initialEndValue changes (range mode)
+    watch(
+      () => props.content?.initialEndValue,
+      (newValue) => {
+        if (props.content?.rangeMode && newValue && newValue !== endValue.value) {
+          try {
+            const date = new Date(newValue)
+            if (!isNaN(date.getTime())) {
+              setEndValue(newValue)
+              setEndTimestamp(date.getTime())
+            }
+          } catch (error) {
+            // Invalid date, ignore
+          }
+        } else if (props.content?.rangeMode && !newValue) {
+          setEndValue('')
+          setEndTimestamp(0)
         }
       },
       { immediate: true }
@@ -1447,44 +1494,6 @@ export default {
     onMounted(() => {
       const doc = wwLib.getFrontDocument()
       doc.addEventListener('click', handleClickOutside)
-      
-      // Initialize with initial values if provided
-      if (!content.value?.rangeMode) {
-        // Single mode - use initialValue
-        if (content.value?.initialValue) {
-          try {
-            const initialDate = parseISO(content.value.initialValue)
-            if (isValid(initialDate)) {
-              selectedValue.value = formatISO(initialDate)
-            }
-          } catch (error) {
-            console.warn('Invalid initialValue format:', content.value.initialValue)
-          }
-        }
-      } else {
-        // Range mode - use initialStartValue and initialEndValue
-        if (content.value?.initialStartValue) {
-          try {
-            const initialStart = parseISO(content.value.initialStartValue)
-            if (isValid(initialStart)) {
-              startValue.value = formatISO(initialStart)
-            }
-          } catch (error) {
-            console.warn('Invalid initialStartValue format:', content.value.initialStartValue)
-          }
-        }
-        
-        if (content.value?.initialEndValue) {
-          try {
-            const initialEnd = parseISO(content.value.initialEndValue)
-            if (isValid(initialEnd)) {
-              endValue.value = formatISO(initialEnd)
-            }
-          } catch (error) {
-            console.warn('Invalid initialEndValue format:', content.value.initialEndValue)
-          }
-        }
-      }
     })
 
     onUnmounted(() => {
