@@ -13,7 +13,8 @@
   "author": "",
   "license": "MIT",
   "scripts": {
-    "serve": "npx @weweb/cli serve"
+    "serve": "npx @weweb/cli serve",
+    "build": "npx @weweb/cli build"
   },
   "devDependencies": {
     "@weweb/cli": "latest"
