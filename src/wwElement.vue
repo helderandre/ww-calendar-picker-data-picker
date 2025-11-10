@@ -220,8 +220,8 @@
 
 <script>
 import { computed, ref, watch, onMounted, onUnmounted } from 'vue'
-import { format, parse, addMonths, subMonths, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isToday, isBefore, isAfter, startOfWeek, endOfWeek } from 'date-fns'
-import { enUS, enGB, ptBR, pt, es, fr, de, it, nl, ru, ja, zhCN, ko, arSA as ar } from 'date-fns/locale'
+import { format, parse, addMonths, subMonths, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isToday, isBefore, isAfter, startOfWeek, endOfWeek, parseISO, isValid, formatISO } from 'date-fns'
+import { enUS, enGB, ptBR, pt, es, fr, de, it, nl, ru, ja, zhCN, ko, arSA } from 'date-fns/locale'
 
 export default {
   props: {
@@ -325,7 +325,7 @@ export default {
         'ja-JP': ja,
         'zh-CN': zhCN,
         'ko-KR': ko,
-        'ar-SA': ar,
+        'ar-SA': arSA,
       }
       
       return localeMap[localeCode] || enUS
@@ -1447,6 +1447,44 @@ export default {
     onMounted(() => {
       const doc = wwLib.getFrontDocument()
       doc.addEventListener('click', handleClickOutside)
+      
+      // Initialize with initial values if provided
+      if (!content.value?.rangeMode) {
+        // Single mode - use initialValue
+        if (content.value?.initialValue) {
+          try {
+            const initialDate = parseISO(content.value.initialValue)
+            if (isValid(initialDate)) {
+              selectedValue.value = formatISO(initialDate)
+            }
+          } catch (error) {
+            console.warn('Invalid initialValue format:', content.value.initialValue)
+          }
+        }
+      } else {
+        // Range mode - use initialStartValue and initialEndValue
+        if (content.value?.initialStartValue) {
+          try {
+            const initialStart = parseISO(content.value.initialStartValue)
+            if (isValid(initialStart)) {
+              startValue.value = formatISO(initialStart)
+            }
+          } catch (error) {
+            console.warn('Invalid initialStartValue format:', content.value.initialStartValue)
+          }
+        }
+        
+        if (content.value?.initialEndValue) {
+          try {
+            const initialEnd = parseISO(content.value.initialEndValue)
+            if (isValid(initialEnd)) {
+              endValue.value = formatISO(initialEnd)
+            }
+          } catch (error) {
+            console.warn('Invalid initialEndValue format:', content.value.initialEndValue)
+          }
+        }
+      }
     })
 
     onUnmounted(() => {

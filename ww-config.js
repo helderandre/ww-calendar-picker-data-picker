@@ -13,13 +13,52 @@ export default {
       section: 'settings',
       bindable: true,
       defaultValue: '',
+      hidden: content => content?.rangeMode,
       /* wwEditor:start */
       bindingValidation: {
         type: 'string',
         tooltip: 'ISO date string (e.g., "2024-03-15T14:30:00")',
       },
       propertyHelp: {
-        en: 'Initial date and time value in ISO format. Leave empty for current date/time.',
+        en: 'Initial date and time value in ISO format. Leave empty for current date/time. Hidden in range mode.',
+      },
+      /* wwEditor:end */
+    },
+
+    // ========== INITIAL START VALUE (Range Mode) ==========
+    initialStartValue: {
+      label: { en: 'Initial Start Value' },
+      type: 'Text',
+      section: 'settings',
+      bindable: true,
+      defaultValue: '',
+      hidden: content => !content?.rangeMode,
+      /* wwEditor:start */
+      bindingValidation: {
+        type: 'string',
+        tooltip: 'ISO date string for start date/time (e.g., "2024-03-15T09:00:00")',
+      },
+      propertyHelp: {
+        en: 'Initial start date and time value in ISO format for range mode.',
+      },
+      /* wwEditor:end */
+    },
+
+    // ========== INITIAL END VALUE (Range Mode) ==========
+    initialEndValue: {
+      label: { en: 'Initial End Value' },
+      type: 'Text',
+      section: 'settings',
+      bindable: true,
+      defaultValue: '',
+      hidden: content => !content?.rangeMode,
+      /* wwEditor:start */
+      bindingValidation: {
+        type: 'string',
+        tooltip: 'ISO date string for end date/time (e.g., "2024-03-15T17:00:00")',
+      },
+      propertyHelp: {
+        en: 'Initial end date and time value in ISO format for range mode.',
       },
       /* wwEditor:end */
     },
