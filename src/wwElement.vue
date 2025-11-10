@@ -221,7 +221,7 @@
 <script>
 import { computed, ref, watch, onMounted, onUnmounted } from 'vue'
 import { format, parse, addMonths, subMonths, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isToday, isBefore, isAfter, startOfWeek, endOfWeek } from 'date-fns'
-import { enUS, enGB, ptBR, pt, es, fr, de, it, nl, ru, ja, zhCN, ko, arSA } from 'date-fns/locale'
+import { enUS, enGB, ptBR, pt, es, fr, de, it, nl, ru, ja, zhCN, ko, arSA as ar } from 'date-fns/locale'
 
 export default {
   props: {
@@ -325,7 +325,7 @@ export default {
         'ja-JP': ja,
         'zh-CN': zhCN,
         'ko-KR': ko,
-        'ar-SA': arSA,
+        'ar-SA': ar,
       }
       
       return localeMap[localeCode] || enUS
