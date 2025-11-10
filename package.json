@@ -1,20 +1,9 @@
 {
   "name": "ww-calendar-picker-data-picker",
   "version": "1.0.0",
-  "description": "A WeWeb custom element for date and time selection with full customization options",
-  "main": "ww-config.js",
-  "keywords": [
-    "weweb",
-    "date-picker",
-    "time-picker",
-    "datetime",
-    "calendar"
-  ],
-  "author": "",
-  "license": "MIT",
   "scripts": {
-    "serve": "npx @weweb/cli serve",
-    "build": "npx @weweb/cli build"
+    "build": "weweb build",
+    "serve": "weweb serve"
   },
   "devDependencies": {
     "@weweb/cli": "latest"
